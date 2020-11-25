@@ -13,4 +13,7 @@ resource "aws_security_group" "sg_1"{
 		protocol = "tcp"
 		cidr_blocks = ["0.0.0.0/0"]
 	}
+    tags = {
+		Name = var.tagname
+    }
 }
