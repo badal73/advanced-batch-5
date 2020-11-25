@@ -4,11 +4,13 @@ resource "aws_ebs_volume" "volume_1"{
 	tags = {
 		Name = var.tagname
 	}
+	count = var.ec2_count
 }
 
 resource "aws_volume_attachment" "volume_1_attachment_server_1"{
-	volume_id = aws_ebs_volume.volume_1.id
-	instance_id = aws_instance.server_1.id
+    count = var.ec2_count
+	volume_id = aws_ebs_volume.volume_1[count.index].id
+	instance_id = aws_instance.server_1[count.index].id
 	device_name = "/dev/sdb"
 	skip_destroy = "true"
 
@@ -17,7 +19,7 @@ resource "aws_volume_attachment" "volume_1_attachment_server_1"{
 			type = "ssh"
 			user = "root"
 			password = "thinknyx@123"
-			host = aws_instance.server_1.public_ip
+			host = aws_instance.server_1[count.index].public_ip
 		}
 		inline = [
 			"yum install -y git",

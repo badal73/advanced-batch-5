@@ -8,4 +8,5 @@ resource "aws_instance" "server_1"{
   security_groups = [
 	aws_security_group.sg_1.name
   ]
+  count = var.ec2_count
 }
