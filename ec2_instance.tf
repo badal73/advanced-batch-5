@@ -4,4 +4,7 @@ resource "aws_instance" "server_1"{
   tags = {
 	Name = "IBM-DA-KUL"
   }
+  security_groups = [
+	aws_security_group.sg_1.name
+  ]
 }
