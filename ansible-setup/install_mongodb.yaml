@@ -1,0 +1,20 @@
+---
+- name: Installing MonogoDB 
+  hosts: ibm
+  
+  tasks: 
+  - name: Setup MongoDB Repo
+    copy: 
+      src: mongodb-org.repo
+      dest: /etc/yum.repos.d/mongodb-org.repo
+
+  - name: Installing MongoDB Package
+    package: 
+      name: mongodb-org
+      state: present
+  
+  - name: Starting MongoDB Service
+    service: 
+      name: mongod
+      state: started
+      enabled: yes
