@@ -1,0 +1,11 @@
+---
+- name: My First Playbook
+
+  hosts: all
+
+  tasks: 
+  - name: Creating a User
+    user: 
+      name: kmayer
+      state: present
+      home: /opt/app
