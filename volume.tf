@@ -17,16 +17,16 @@ resource "aws_volume_attachment" "volume_1_attachment_server_1"{
 	provisioner "remote-exec" {
 		connection {
 			type = "ssh"
-			user = "root"
+			user = "centos"
 			private_key = file("c:/training/keys/kul-aws-sync.pem")
 			host = aws_instance.server_1[count.index].public_ip
 		}
 		inline = [
-			"yum install -y git",
-			"mkdir /data",
-			"mkfs -t ext4 /dev/xvdb",
-			"mount /dev/xvdb /data",
-			"git clone https://github.com/kul-unisys/sample-java-app.git /data/demo"
+			"sudo yum install -y git",
+			"sudo mkdir /data",
+			"sudo mkfs -t ext4 /dev/xvdb",
+			"sudo mount /dev/xvdb /data",
+			"sudo git clone https://github.com/kul-unisys/sample-java-app.git /data/demo"
 		]
 	}
 	
