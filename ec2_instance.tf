@@ -9,4 +9,5 @@ resource "aws_instance" "server_1"{
 	aws_security_group.sg_1.name
   ]
   count = var.ec2_count
+  key_name = "kul-aws-sync"
 }

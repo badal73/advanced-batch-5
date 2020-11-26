@@ -18,7 +18,7 @@ resource "aws_volume_attachment" "volume_1_attachment_server_1"{
 		connection {
 			type = "ssh"
 			user = "root"
-			password = "thinknyx@123"
+			private_key = file("c:/training/keys/kul-aws-sync.pem")
 			host = aws_instance.server_1[count.index].public_ip
 		}
 		inline = [
