@@ -9,3 +9,16 @@
       name: kmayer
       state: present
       home: /opt/app
+
+  - name: Installing NTP Package
+    package: 
+      name: ntp
+      state: present
+
+  - name: Installing multiple packages in single tasks
+    package: 
+      name: 
+      - git
+      - java
+      - maven
+      state: present
