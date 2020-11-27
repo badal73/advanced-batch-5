@@ -103,6 +103,26 @@ resource "null_resource" "setup_k8s_cluster" {
         ]
     }
     triggers = {
-      "always_run" = "${timestamp()}"
+      "always_run" = timestamp()
+    }
+}
+
+resource "null_resource" "create_kubernetes_objects" {
+  depends_on = [ null_resource.setup_k8s_cluster ]
+  provisioner "remote-exec" {
+        connection{
+            type = "ssh"
+            user = "root"
+            password = "thinknyx@123"
+            host = aws_instance.centos_server_master[0].public_ip
+        }
+        inline = [
+            "yum install -y wget unzip",
+            "wget https://releases.hashicorp.com/terraform/0.13.5/terraform_0.13.5_linux_amd64.zip && unzip terraform_0.13.5_linux_amd64.zip && cp terraform /usr/bin/",
+			"cd advanced-batch-5/manage_kubernetes_with_terraform && terraform init && terraform apply -auto-approve"
+        ]
+    }
+    triggers = {
+      "always_run" = timestamp()
     }
 }
