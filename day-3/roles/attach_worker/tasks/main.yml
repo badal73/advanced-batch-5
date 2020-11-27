@@ -1,2 +1,22 @@
 ---
 # tasks file for roles/attach_worker
+
+- name: Disable SWAP & Configure IPTABLES
+  shell: swapoff -a && cp /etc/fstab /etc/fstab_old && echo "#This is temp file for Kubernetes Installation, correct file is /etc/fstab_old" >> /etc/fstab && echo 1 > /proc/sys/net/ipv4/ip_forward && echo 1 > /proc/sys/net/bridge/bridge-nf-call-iptables
+
+- name: Copy JOIN Command
+  when: inventory_hostname in groups['node']
+  copy: 
+    src: join-command.sh
+    dest: /tmp
+    mode: 755
+
+- name: Run JOIN Command
+  script: /tmp/join-command.sh
+  register: output
+  when: inventory_hostname in groups['node']
+  ignore_errors: yes
+
+- name: printing join command output
+  debug: var=output.stdout_lines
+  when: inventory_hostname in groups['node']
