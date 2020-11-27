@@ -99,8 +99,10 @@ resource "null_resource" "setup_k8s_cluster" {
         }
         inline = [
             "git clone https://github.com/kul-ibm/advanced-batch-5",
-			"cd advanced-batch-5/day-3 && ansible-playbook kubernetes_cluster.yaml --extra-vars 'ansible_user=root ansible_password=thinknyx@123'",
-            "sleep 20 && kubectl get nodes"
+			"cd advanced-batch-5/day-3 && ansible-playbook kubernetes_cluster.yaml --extra-vars 'ansible_user=root ansible_password=thinknyx@123' && sleep 20 && kubectl get nodes"
         ]
+    }
+    triggers = {
+      "always_run" = "${timestamp()}"
     }
 }
