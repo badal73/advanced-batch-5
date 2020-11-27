@@ -28,3 +28,12 @@
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_gid }}"
   when: inventory_hostname in groups['master']
+
+- name: configuring POD network
+  shell: kubectl apply -f https://docs.projectcalico.org/v3.11/manifests/calico.yaml && sleep 20 && kubectl get nodes
+  register: output
+  when: inventory_hostname in groups['master']
+
+- name: Printing output on console
+  debug: var=output.stdout_lines
+  when: inventory_hostname in groups['master']
