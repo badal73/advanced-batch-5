@@ -87,3 +87,20 @@ output "master_public_ips" {
 output "nodes_public_ips" {
 	value = aws_instance.centos_server_node.*.public_ip
 }
+
+resource "null_resource" "setup_k8s_cluster" {
+  depends_on = [ aws_instance.centos_server_node ]
+  provisioner "remote-exec" {
+        connection{
+            type = "ssh"
+            user = "root"
+            password = "thinknyx@123"
+            host = aws_instance.centos_server_master[0].public_ip
+        }
+        inline = [
+            "git clone https://github.com/kul-ibm/advanced-batch-5",
+			"cd advanced-batch-5/day-3 && ansible-playbook kubernetes_cluster.yaml --extra-vars 'ansible_user=root ansible_password=thinknyx@123'",
+            "sleep 20 && kubectl get nodes"
+        ]
+    }
+}
