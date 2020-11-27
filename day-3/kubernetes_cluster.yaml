@@ -1,0 +1,6 @@
+---
+- name: Configure Kubernetes Cluster
+  hosts: all
+
+  roles: 
+  - docker
