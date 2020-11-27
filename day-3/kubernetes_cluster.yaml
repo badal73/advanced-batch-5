@@ -6,3 +6,4 @@
   - docker
   - k8s
   - init_master
+  - attach_worker
