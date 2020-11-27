@@ -1,7 +1,5 @@
 ---
 # defaults file for roles/docker
----
-# defaults file for roles/docker
 
 dockerceversion: docker-ce-19.03.11
 dockercliversion: docker-ce-cli-19.03.11
