@@ -1,2 +1,44 @@
 ---
 # tasks file for roles/docker
+- name: Install required packages
+  package: 
+    name: 
+      - yum-utils
+      - device-mapper-persistent-data
+      - lvm2
+    state: present
+
+- name: Add Docker Repo
+  get_url: 
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docker-ce.repo
+
+
+- name: Installing Specific version of Docker as per k8s requirement
+  package: 
+    name: 
+      - "{{ dockerceversion }}"
+      - "{{ dockercliversion }}"
+      - "{{ containerdioversion }}"
+    state: present
+
+
+- name: Creating Docker folder
+  file: 
+    path: /etc/docker
+    state: directory
+    mode: '0755'
+
+- name: Copying Docker Daemon file to /etc/docker
+  copy: 
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+    mode: '0755'
+  notify: 
+  - restart-docker
+
+- name: Start & Enable Docker Service 
+  service: 
+    name: docker
+    state: started
+    enabled: yes
